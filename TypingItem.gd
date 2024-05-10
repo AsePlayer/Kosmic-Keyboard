@@ -11,23 +11,9 @@ var word_progress = 0
 var center_labels = ["[center]", "[/center]"]
 var color_labels = ["[color=#FFFF00]", "[/color]"]
 
-var words = [
-	"APPLE", "LEMON", "GRAPE", "MELON", "BANANA",  # 5-letter words
-	"ORANGE", "PEACH", "CARROT", "POTATO", "TOMATO",  # 6-letter words
-	"AVOCADO", "LETTUCE", "SPINACH", "BROCCOLI", "CABBAGE",  # 7-letter words
-	"COFFEE", "JUICE", "MUFFIN", "COOKIE", "DONUT",  # 5-letter words
-	"CHEESE", "BUTTER", "YOGURT", "BREAD", "SALAD",  # 6-letter words
-	"SANDWICH", "PANCAKE", "WAFFLE", "SAUSAGE", "BACON",  # 7-letter words
-	"PENCIL", "MARKER", "PAPER", "BOOKS", "CHALK",  # 5-letter words
-	"CRAYON", "GLUE", "RULER", "ERASER", "PAINT",  # 6-letter words
-	"SCISSORS", "BACKPACK", "NOTEBOOK", "DESKTOP", "TABLET",  # 7-letter words
-	"BASKET", "SOCCER", "TENNIS", "GOLF", "HOCKEY",  # 5-letter words
-	"FOOTBALL", "CRICKET", "BOWLING", "SWIMMING", "RUNNING",  # 7-letter words
-]
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	word = words.pick_random()
+	word = WordBank.get_word()
 	word_length = word.length()
 	
 	label.text = word
