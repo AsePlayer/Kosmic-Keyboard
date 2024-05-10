@@ -13,8 +13,11 @@ func _unhandled_key_input(event:InputEvent):
 func search_letter_in_words(letter:String):
 	var letter_found:bool = false
 	
+	# Cache TypingItems parent that contains every TypingItem child
+	if typing_items == null: typing_items = get_tree().get_first_node_in_group("TypingItems")
+	
 	# Search through all TypingItems
-	for item:TypingItem in get_tree().get_first_node_in_group("TypingItems").get_children():
+	for item:TypingItem in typing_items.get_children():
 		# Set target to lock-on to
 		if target == null and letter == item.word[0]: 
 			target = item
