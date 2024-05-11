@@ -12,20 +12,23 @@ func _unhandled_key_input(event:InputEvent):
 
 func search_letter_in_words(letter:String):
 	var letter_found:bool = false
-	
+	var char_found:bool = false
 	# Cache TypingItems parent that contains every TypingItem child
 	if typing_items == null: typing_items = get_tree().get_first_node_in_group("TypingItems")
 	
 	# Search through all TypingItems
 	for item:TypingItem in typing_items.get_children():
 		# Set target to lock-on to
-		if target == null and letter == item.word[0]: 
+		if item.on_screen and target == null and letter == item.word[0]:
 			target = item
 
 		# Check if the target's correct letter is typed
 		if target != null and item == target:
-			target.add_character(letter)
-			letter_found = true
+			letter_found = item.add_character(letter)
+		
+		# Type 1 projectile despite being mid-word
+		if not item.is_word and item.word[0] == letter and not char_found:
+			char_found = item.add_character(letter)
 	
 	# Letter not found on any items
-	if not letter_found: UI.display_wrong_letter_message(letter, false)
+	if (not letter_found and not char_found): UI.display_wrong_letter_message(letter, false)
