@@ -14,6 +14,12 @@ var default_words:Array[String] = [
 	"FOOTBALL", "CRICKET", "BOWLING", "SWIMMING", "RUNNING",  # 7-letter words
 ]
 
+var letters:Array[String] = [
+	"A", "B", "C", "D", "E", "F", "G", "H", "I", 
+	"J", "K", "L", "M", "N", "O", "P", "Q", "R", 
+	"S", "T", "U", "V", "W", "X", "Y", "Z"
+]
+
 var words:Array[String] = default_words.duplicate()
 
 
@@ -25,3 +31,7 @@ func get_word():
 	words.erase(word) # Prevent duplicate words
 	
 	return word
+
+
+func get_letter():
+	return letters.pick_random()
