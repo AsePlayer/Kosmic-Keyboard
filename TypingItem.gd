@@ -4,6 +4,7 @@ class_name TypingItem
 @onready var label = $Label
 @onready var shoot_timer = $ShootTimer
 @export var is_word:bool
+@export var speed:int = 25
 
 var word:String
 var word_length
@@ -19,13 +20,18 @@ var on_screen = false
 func _ready():
 	if is_word: 
 		word = WordBank.get_word()
-		#shoot_timer.start()
+		shoot_timer.start()
 	else: 
 		word = WordBank.get_letter()
 	word_length = word.length()
 	
 	label.text = word
 	update_formatting()
+
+func _process(delta):
+	if GameManager.state == GameManager.State.IN_GAME:
+		var direction = (GameManager.player.global_position - global_position).normalized()
+		position += direction * (speed * delta + 2 * int(not on_screen))
 
 
 func add_character(letter:String):
@@ -65,8 +71,8 @@ func shoot_bullets():
 
 
 func _on_shoot_timer_timeout():
-	shoot_bullets()
-	pass # Replace with function body.
+	if GameManager.state == GameManager.State.IN_GAME:
+		shoot_bullets()
 
 
 func _on_word_visible_on_screen_screen_entered():

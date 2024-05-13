@@ -18,7 +18,7 @@ func search_letter_in_words(letter:String):
 	
 	# Search through all TypingItems
 	for item:TypingItem in typing_items.get_children():
-		# Set target to lock-on to
+		# Set target to lock-on to using first letter in word
 		if item.on_screen and target == null and letter == item.word[0]:
 			target = item
 
@@ -31,4 +31,7 @@ func search_letter_in_words(letter:String):
 			char_found = item.add_character(letter)
 	
 	# Letter not found on any items
-	if (not letter_found and not char_found): UI.display_wrong_letter_message(letter, false)
+	if (not letter_found and not char_found): 
+		UI.display_wrong_letter_message(letter, false)
+	
+	GameManager.update_accuracy(letter_found or char_found)
