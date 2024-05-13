@@ -6,6 +6,7 @@ var typing_items
 
 # Scans for all keystrokes
 func _unhandled_key_input(event:InputEvent):
+	if GameManager.state == GameManager.State.GAME_OVER: return
 	if event.is_pressed() and event.is_echo() == false:
 		search_letter_in_words(event.as_text())
 
