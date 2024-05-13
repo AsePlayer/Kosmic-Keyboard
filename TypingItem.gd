@@ -16,8 +16,11 @@ var color_labels = ["[color=#FFFF00]", "[/color]"]
 var bullet_scene = preload("res://Scenes/TypingItemProjectile.tscn")
 var on_screen = false
 
+var spawner
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	spawner = get_parent()
 	if is_word: 
 		word = WordBank.get_word()
 		shoot_timer.start()
@@ -32,6 +35,9 @@ func _process(delta):
 	if GameManager.state == GameManager.State.IN_GAME:
 		var direction = (GameManager.player.global_position - global_position).normalized()
 		position += direction * (speed * delta + 2 * int(not on_screen))
+	
+	if word_progress > 0: z_index = 2 # Prioritize current word being typed
+	if not is_word: z_index = 3 # Super Prioritize single character projectiles
 
 
 func add_character(letter:String):
@@ -39,8 +45,8 @@ func add_character(letter:String):
 	
 	var is_it_correct:bool = check_correct_letter(letter)
 	update_formatting()
+	
 	return is_it_correct
-	# Temporary kill code
 
 
 func check_correct_letter(letter:String):
@@ -53,7 +59,9 @@ func check_correct_letter(letter:String):
 
 func update_formatting():
 	# Destroy for now if word is finished
-	if word_progress >= word_length: queue_free()
+	if word_progress >= word_length: 
+		spawner.enemy_died(is_word)
+		queue_free()
 		
 	# Format word with:  [center -> color -> WORD <- color <- center]
 	label.text = "%s%s%s%s" % [center_labels[0],       # Start center
