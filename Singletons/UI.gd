@@ -9,11 +9,14 @@ var game_over_node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	cache_UI_elements()
-	wrong_letter_ui.visible = false
+	print(GameManager.state)
+	if GameManager.state == GameManager.State.START_TYPING:
+		cache_UI_elements()
+		wrong_letter_ui.visible = false
 
 
 func _process(delta):
+	if GameManager.state == GameManager.State.MAIN_MENU: return
 	# Cache UI Elements on Restart
 	if not is_instance_valid(wrong_letter_ui) or not is_instance_valid(time_until_removed_message): 
 		cache_UI_elements()
@@ -37,6 +40,7 @@ func display_wrong_letter_message(letter:String, target_currently_selected:bool)
 
 
 func cache_UI_elements():
+	print("Cacheing")
 	wrong_letter_ui = get_tree().get_first_node_in_group("WrongLetter") # Label
 	time_until_removed_message = wrong_letter_ui.get_child(0) # Timer
 	
@@ -46,7 +50,6 @@ func cache_UI_elements():
 	game_over_node = get_tree().get_first_node_in_group("GameOver")
 	
 	call_game_over(false)
-
 
 
 func call_game_over(isGameOver:bool):
