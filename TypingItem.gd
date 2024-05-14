@@ -18,17 +18,18 @@ var on_screen = false
 
 var spawner
 
+var start_typing:bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	spawner = get_parent()
+	if start_typing: return
 	if is_word: 
-		word = WordBank.get_word()
+		set_word(WordBank.get_word())
 		shoot_timer.start()
 	else: 
-		word = WordBank.get_letter()
-	word_length = word.length()
-	
-	label.text = word
+		set_word(WordBank.get_letter())
+
 	update_formatting()
 
 func _process(delta):
@@ -64,7 +65,7 @@ func update_formatting():
 		queue_free()
 		
 	# Format word with:  [center -> color -> WORD <- color <- center]
-	label.text = "%s%s%s%s" % [center_labels[0],       # Start center
+	$Label.text = "%s%s%s%s" % [center_labels[0],       # Start center
 	color_labels[0],                                   # Start yellow
 	word.insert(word_progress, color_labels[1]),       #   End yellow
 	center_labels[1]]                                  #   End center
@@ -85,3 +86,14 @@ func _on_shoot_timer_timeout():
 
 func _on_word_visible_on_screen_screen_entered():
 	on_screen = true
+
+
+func set_word(w:String):
+	word = w
+	word_length = word.length()
+	update_formatting()
+
+
+func disable_enemy():
+	speed = 0
+
