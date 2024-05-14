@@ -3,6 +3,7 @@ extends Node
 var target:TypingItem
 var typing_items
 
+var closest_item:TypingItem
 
 # Scans for all keystrokes
 func _unhandled_key_input(event:InputEvent):
@@ -14,6 +15,7 @@ func _unhandled_key_input(event:InputEvent):
 func search_letter_in_words(letter:String):
 	var letter_found:bool = false
 	var char_found:bool = false
+	
 	# Cache TypingItems parent that contains every TypingItem child
 	if typing_items == null: typing_items = get_tree().get_first_node_in_group("TypingItems")
 	
