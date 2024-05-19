@@ -5,6 +5,7 @@ class_name TypingItem
 @onready var shoot_timer = $ShootTimer
 @export var is_word:bool
 @export var speed:int = 25
+@export var is_shooting:bool
 
 var word:String
 var word_length
@@ -26,7 +27,7 @@ func _ready():
 	if start_typing: return
 	if is_word: 
 		set_word(WordBank.get_word())
-		shoot_timer.start()
+		if is_shooting: shoot_timer.start()
 	else: 
 		set_word(WordBank.get_letter())
 
@@ -65,7 +66,7 @@ func update_formatting():
 		queue_free()
 		
 	# Format word with:  [center -> color -> WORD <- color <- center]
-	$Label.text = "%s%s%s%s" % [center_labels[0],       # Start center
+	$Label.text = "%s%s%s%s" % [center_labels[0],      # Start center
 	color_labels[0],                                   # Start yellow
 	word.insert(word_progress, color_labels[1]),       #   End yellow
 	center_labels[1]]                                  #   End center
